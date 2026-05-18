@@ -1,11 +1,12 @@
 Backend Firebase
 
-Este diretório conterá a lógica de backend e integração com Firebase.
+Este diretório contém a lógica de backend e integração com Firebase.
 O backend será responsável por:
 - Autenticação de usuários via Firebase Auth.
 - Armazenamento de dados de produtos, lojas e preços no Firestore.
 - Regras de segurança e validação no Firebase.
 - Possíveis funções Cloud Functions para rotinas administrativas.
+- Integração com a aplicação web mobile first em `web/`.
 
 Estrutura inicial:
 - firebaseConfig.js
