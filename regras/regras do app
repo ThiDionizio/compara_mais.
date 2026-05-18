@@ -1,0 +1,20 @@
+Regras do App
+
+Este aplicativo tem como objetivo comparar preços de produtos de lojas e mercados de Ivaiporã, facilitando o acesso aos produtos mais em conta.
+
+Funcionalidades principais:
+- Exibir lista de produtos e estabelecimentos locais.
+- Comparar preços entre lojas e mercados.
+- Destacar o menor preço disponível para cada produto.
+- Buscar produtos por nome, categoria ou loja.
+- Interface mobile first para uso prático em celulares.
+
+Tecnologia prevista:
+- React Native com Expo.
+- Firebase para banco de dados e autenticação.
+- Mobile first e design responsivo para telas pequenas.
+
+Objetivos do projeto:
+- Tornar mais fácil para o usuário encontrar opções de compra econômicas em Ivaiporã.
+- Compartilhar informações de preço de forma simples e organizada.
+- Garantir que a autenticação e o armazenamento dos dados sejam seguros usando Firebase.
