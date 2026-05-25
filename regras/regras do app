@@ -9,6 +9,11 @@ Funcionalidades principais:
 - Buscar produtos por nome, categoria ou loja.
 - Interface mobile first para uso prático em celulares.
 
+Tela de administrador:
+- Painel web mobile first para gerenciamento de produtos, lojas e preços.
+- Cadastrar novos produtos e atualizar valores para manter as comparações atualizadas.
+- Visualizar e gerenciar estabelecimentos de Ivaiporã.
+
 Tecnologia prevista:
 - React Native com Expo.
 - Firebase para banco de dados e autenticação.

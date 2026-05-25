@@ -124,6 +124,55 @@ body {
   transform: translateY(1px);
 }
 
+.hidden {
+  display: none;
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.back-btn {
+  width: auto;
+  padding: 12px 16px;
+}
+
+.product-form label,
+.product-form input,
+.product-form textarea {
+  width: 100%;
+  display: block;
+}
+
+.form-label {
+  margin: 16px 0 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.product-form input,
+.product-form textarea {
+  background: #f8fafc;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 0.98rem;
+  color: #0f172a;
+}
+
+.product-form textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
 @media (min-width: 768px) {
   .app-shell {
     padding: 32px;
@@ -131,9 +180,5 @@ body {
 
   .content {
     gap: 24px;
-  }
-
-  .actions {
-    grid-template-columns: 1fr 1fr;
   }
 }

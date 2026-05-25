@@ -17,29 +17,70 @@
       </header>
 
       <main class="content">
-        <section class="card card-primary">
-          <h2>Visão geral</h2>
-          <p>Gerencie produtos, lojas e ofertas em um layout pensado para smartphones e tablets.</p>
+        <section id="dashboardSection">
+          <section class="card card-primary">
+            <h2>Visão geral</h2>
+            <p>Gerencie produtos, lojas e ofertas em um layout pensado para smartphones e tablets.</p>
+          </section>
+
+          <section class="list-card">
+            <article class="item">
+              <h3>Cadastrar produto</h3>
+              <p>Adicionar um produto novo com preço e loja correspondente.</p>
+            </article>
+            <article class="item">
+              <h3>Editar preços</h3>
+              <p>Atualizar valores para manter a comparação sempre atualizada.</p>
+            </article>
+            <article class="item">
+              <h3>Visualizar lojas</h3>
+              <p>Listar estabelecimentos de Ivaiporã e seus dados.</p>
+            </article>
+          </section>
+
+          <section class="actions">
+            <button id="btnAddProduct" class="btn btn-primary">Cadastrar novo produto</button>
+            <button id="btnAddStore" class="btn btn-secondary">Cadastrar Loja</button>
+            <button id="btnViewStores" class="btn btn-secondary">Ver lista de lojas</button>
+          </section>
         </section>
 
-        <section class="list-card">
-          <article class="item">
-            <h3>Cadastrar produto</h3>
-            <p>Adicionar um produto novo com preço e loja correspondente.</p>
-          </article>
-          <article class="item">
-            <h3>Editar preços</h3>
-            <p>Atualizar valores para manter a comparação sempre atualizada.</p>
-          </article>
-          <article class="item">
-            <h3>Visualizar lojas</h3>
-            <p>Listar estabelecimentos de Ivaiporã e seus dados.</p>
-          </article>
-        </section>
+        <section id="productFormSection" class="card product-form hidden">
+          <div class="form-header">
+            <button id="btnBackToAdmin" type="button" class="btn btn-secondary back-btn">Voltar</button>
+            <h2>Cadastro de Produto</h2>
+          </div>
 
-        <section class="actions">
-          <button id="btnAddProduct" class="btn btn-primary">Cadastrar novo produto</button>
-          <button id="btnViewStores" class="btn btn-secondary">Ver lista de lojas</button>
+          <form id="productForm">
+            <label class="form-label" for="productName">Nome do produto</label>
+            <input id="productName" name="productName" type="text" placeholder="Digite o nome" required />
+
+            <label class="form-label" for="productBrand">Marca</label>
+            <input id="productBrand" name="productBrand" type="text" placeholder="Digite a marca" />
+
+            <label class="form-label" for="productWeight">Peso / Quantidade</label>
+            <input id="productWeight" name="productWeight" type="text" placeholder="Ex: 500 g, 1L" />
+
+            <label class="form-label" for="productPrice">Preço</label>
+            <input id="productPrice" name="productPrice" type="number" step="0.01" placeholder="Ex: 12.90" required />
+
+            <label class="form-label" for="productValidity">Validade</label>
+            <input id="productValidity" name="productValidity" type="date" />
+
+            <label class="form-label" for="productDescription">Descrição</label>
+            <textarea id="productDescription" name="productDescription" rows="4" placeholder="Detalhes adicionais do produto"></textarea>
+
+            <label class="form-label" for="productCategory">Categoria</label>
+            <input id="productCategory" name="productCategory" type="text" placeholder="Ex: Alimentos, Bebidas" />
+
+            <label class="form-label" for="productStore">Loja / Estabelecimento</label>
+            <input id="productStore" name="productStore" type="text" placeholder="Nome da loja" />
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Salvar produto</button>
+              <button id="btnCancelProduct" type="button" class="btn btn-secondary">Cancelar</button>
+            </div>
+          </form>
         </section>
       </main>
     </div>
