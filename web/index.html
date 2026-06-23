@@ -4,6 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Compara Mais - Admin</title>
+    <script>
+      // Bloqueia registro de listeners para eventos de mutação DOM obsoletos
+      // (evita mensagens como: "Listener added for a 'DOMNodeInserted' mutation event")
+      (function () {
+        const deprecated = new Set(['DOMNodeInserted', 'DOMNodeRemoved', 'DOMSubtreeModified']);
+        const orig = EventTarget.prototype.addEventListener;
+        EventTarget.prototype.addEventListener = function (type, listener, options) {
+          if (deprecated.has(type)) return; // silenciosamente ignora
+          return orig.call(this, type, listener, options);
+        };
+
+        // Caso jQuery seja carregado depois, patch para ignorar bindings obsoletos
+        const patchJQuery = (jq) => {
+          if (!jq || jq.__patchedDeprecated) return;
+          const banned = Array.from(deprecated);
+          const origOn = jq.fn.on;
+          jq.fn.on = function () {
+            if (typeof arguments[0] === 'string') {
+              const types = arguments[0].split(/\s+/).filter(t => !banned.includes(t));
+              if (types.length === 0) return this;
+              arguments[0] = types.join(' ');
+            }
+            return origOn.apply(this, arguments);
+          };
+          const origBind = jq.fn.bind;
+          jq.fn.bind = function () {
+            if (typeof arguments[0] === 'string' && banned.includes(arguments[0])) return this;
+            return origBind.apply(this, arguments);
+          };
+          jq.__patchedDeprecated = true;
+        };
+
+        const iv = setInterval(() => {
+          if (window.jQuery) {
+            patchJQuery(window.jQuery);
+            clearInterval(iv);
+          }
+        }, 200);
+      })();
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -67,6 +107,10 @@
 
             <label class="form-label" for="productDescription">Descrição</label>
             <textarea id="productDescription" name="productDescription" rows="4" placeholder="Detalhes adicionais do produto"></textarea>
+
+            <label class="form-label" for="productImage">Foto do produto</label>
+            <input id="productImage" name="productImage" type="file" accept="image/*" />
+            <img id="productImagePreview" class="image-preview" alt="Prévia da imagem do produto" hidden />
 
             <label class="form-label" for="productCategory">Categoria</label>
             <input id="productCategory" name="productCategory" type="text" placeholder="Ex: Alimentos, Bebidas" />

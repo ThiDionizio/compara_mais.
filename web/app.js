@@ -7,6 +7,8 @@ const btnCancelProduct = document.getElementById('btnCancelProduct');
 const productFormSection = document.getElementById('productFormSection');
 const dashboardSection = document.getElementById('dashboardSection');
 const productForm = document.getElementById('productForm');
+const productImageInput = document.getElementById('productImage');
+const productImagePreview = document.getElementById('productImagePreview');
 
 let productEditorSection = null;
 let btnBackToDashboard = null;
@@ -30,6 +32,7 @@ const products = [
     description: 'Leite integral UHT para consumo diário.',
     category: 'Bebidas',
     store: 'Mercado Central',
+    imageUrl: '',
   },
   {
     id: '2',
@@ -75,11 +78,12 @@ const renderProductList = (filter = '') => {
     .map(
       (product) => `
         <article class="product-card" data-id="${product.id}">
-          <div>
+          <div class="product-card-image" style="${product.imageUrl ? `background-image: url('${product.imageUrl}')` : ''}"></div>
+          <div class="product-card-info">
             <strong>${product.name}</strong>
             <span>${product.brand} • ${product.weight}</span>
           </div>
-          <div>
+          <div class="product-card-meta">
             <span class="price">R$ ${product.price}</span>
             <small>${product.store}</small>
           </div>
@@ -89,16 +93,59 @@ const renderProductList = (filter = '') => {
     .join('');
 };
 
+const readImageFile = (input) => {
+  const file = input?.files?.[0];
+  if (!file) return Promise.resolve(null);
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+};
+
+const setPreviewImage = (previewImage, fileInput) => {
+  if (!previewImage || !fileInput) return;
+
+  const file = fileInput.files?.[0];
+  if (!file) {
+    previewImage.hidden = true;
+    previewImage.src = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    previewImage.src = reader.result;
+    previewImage.hidden = false;
+  };
+  reader.readAsDataURL(file);
+};
+
 const showProductDetail = (id) => {
   selectedProductId = id;
   const product = products.find((item) => item.id === id);
   if (!product || !productDetailSection || !productDetailForm || !productDetailView) return;
 
   productDetailSection.hidden = false;
+  productDetailSection.classList.remove('hidden');
   productDetailView.hidden = false;
+  productDetailView.classList.remove('hidden');
   productDetailForm.hidden = true;
+  productDetailForm.classList.add('hidden');
   btnDetailTab?.classList.add('active');
   btnEditTab?.classList.remove('active');
+
+  const viewImage = document.getElementById('viewImage');
+  if (viewImage) {
+    if (product.imageUrl) {
+      viewImage.src = product.imageUrl;
+      viewImage.hidden = false;
+    } else {
+      viewImage.hidden = true;
+      viewImage.src = '';
+    }
+  }
 
   document.getElementById('viewName').textContent = product.name;
   document.getElementById('viewBrand').textContent = product.brand;
@@ -117,6 +164,18 @@ const showProductDetail = (id) => {
   productDetailForm.elements.detailDescription.value = product.description;
   productDetailForm.elements.detailCategory.value = product.category;
   productDetailForm.elements.detailStore.value = product.store;
+
+  const detailImagePreview = productDetailForm.querySelector('#detailImagePreview');
+  if (detailImagePreview) {
+    if (product.imageUrl) {
+      detailImagePreview.src = product.imageUrl;
+      detailImagePreview.hidden = false;
+    } else {
+      detailImagePreview.hidden = true;
+      detailImagePreview.src = '';
+    }
+  }
+
   if (typeof productDetailSection.scrollIntoView === 'function') {
     productDetailSection.scrollIntoView({ behavior: 'smooth' });
   }
@@ -138,7 +197,7 @@ const createProductEditorSection = () => {
       <input id="productSearch" class="search-input" type="search" placeholder="Buscar produto por nome, marca ou loja" />
       <div id="productList" class="product-list"></div>
 
-      <section id="productDetailSection" class="product-detail hidden">
+      <section id="productDetailSection" class="product-detail" hidden>
         <div class="product-detail-header">
           <div>
             <h3>Detalhes do produto</h3>
@@ -152,6 +211,7 @@ const createProductEditorSection = () => {
         </div>
 
         <div id="productDetailView" class="product-detail-view">
+          <img id="viewImage" class="detail-image" alt="Foto do produto" hidden />
           <div class="detail-row"><span class="detail-label">Nome:</span><span id="viewName"></span></div>
           <div class="detail-row"><span class="detail-label">Marca:</span><span id="viewBrand"></span></div>
           <div class="detail-row"><span class="detail-label">Peso / Quantidade:</span><span id="viewWeight"></span></div>
@@ -163,7 +223,7 @@ const createProductEditorSection = () => {
           <button id="btnOpenEdit" type="button" class="btn btn-primary">Editar informações</button>
         </div>
 
-        <form id="productDetailForm" class="product-detail-edit hidden">
+        <form id="productDetailForm" class="product-detail-edit" hidden>
           <label class="form-label" for="detailName">Nome do produto</label>
           <input id="detailName" name="detailName" type="text" required />
 
@@ -181,6 +241,10 @@ const createProductEditorSection = () => {
 
           <label class="form-label" for="detailDescription">Descrição</label>
           <textarea id="detailDescription" name="detailDescription" rows="4"></textarea>
+
+          <label class="form-label" for="detailImage">Foto do produto</label>
+          <input id="detailImage" name="detailImage" type="file" accept="image/*" />
+          <img id="detailImagePreview" class="image-preview" alt="Prévia da imagem a ser enviada" hidden />
 
           <label class="form-label" for="detailCategory">Categoria</label>
           <input id="detailCategory" name="detailCategory" type="text" />
@@ -216,27 +280,67 @@ const createProductEditorSection = () => {
   productDetailView = productEditorSection.querySelector('#productDetailView');
   productDetailForm = productEditorSection.querySelector('#productDetailForm');
 
+  const detailImageInput = productEditorSection.querySelector('#detailImage');
+  const detailImagePreview = productEditorSection.querySelector('#detailImagePreview');
+  detailImageInput?.addEventListener('change', () => setPreviewImage(detailImagePreview, detailImageInput));
+
   productList?.addEventListener('click', (event) => {
     const card = event.target.closest('.product-card');
     if (!card) return;
     const id = card.dataset.id;
-    if (id) showProductDetail(id);
+    if (id) {
+      console.log('[DEBUG] product card clicked', id);
+      // destaque visual do card selecionado
+      const prev = productList.querySelector('.product-card.selected');
+      if (prev) prev.classList.remove('selected');
+      card.classList.add('selected');
+
+      showProductDetail(id);
+      // Ao clicar no card, abrir diretamente a aba de edição e focar o primeiro campo
+      if (productDetailForm) {
+        productDetailView.hidden = true;
+        productDetailView.classList.add('hidden');
+        productDetailForm.hidden = false;
+        productDetailForm.classList.remove('hidden');
+        btnEditTab?.classList.add('active');
+        btnDetailTab?.classList.remove('active');
+        const first = productDetailForm.elements.detailName;
+        if (first) first.focus();
+      } else {
+        btnEditTab?.click();
+      }
+    }
   });
 
   btnBackToDashboard?.addEventListener('click', hideProductEditor);
   btnCloseDetail?.addEventListener('click', () => {
-    if (productDetailSection) productDetailSection.hidden = true;
+    if (productDetailSection) {
+      productDetailSection.hidden = true;
+      productDetailSection.classList.add('hidden');
+    }
     selectedProductId = null;
   });
   btnDetailTab?.addEventListener('click', () => {
-    if (productDetailView) productDetailView.hidden = false;
-    if (productDetailForm) productDetailForm.hidden = true;
+    if (productDetailView) {
+      productDetailView.hidden = false;
+      productDetailView.classList.remove('hidden');
+    }
+    if (productDetailForm) {
+      productDetailForm.hidden = true;
+      productDetailForm.classList.add('hidden');
+    }
     btnDetailTab?.classList.add('active');
     btnEditTab?.classList.remove('active');
   });
   btnEditTab?.addEventListener('click', () => {
-    if (productDetailView) productDetailView.hidden = true;
-    if (productDetailForm) productDetailForm.hidden = false;
+    if (productDetailView) {
+      productDetailView.hidden = true;
+      productDetailView.classList.add('hidden');
+    }
+    if (productDetailForm) {
+      productDetailForm.hidden = false;
+      productDetailForm.classList.remove('hidden');
+    }
     btnEditTab?.classList.add('active');
     btnDetailTab?.classList.remove('active');
   });
@@ -245,12 +349,15 @@ const createProductEditorSection = () => {
   btnOpenEdit?.addEventListener('click', () => btnEditTab?.click());
   btnCancelEdit?.addEventListener('click', () => btnDetailTab?.click());
   productSearch?.addEventListener('input', () => renderProductList(productSearch.value));
-  productDetailForm?.addEventListener('submit', (event) => {
+  productDetailForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!selectedProductId) return;
 
     const product = products.find((item) => item.id === selectedProductId);
     if (!product) return;
+
+    const imageInput = productDetailForm.elements.detailImage;
+    const imageUrl = imageInput?.files?.length ? await readImageFile(imageInput) : null;
 
     product.name = productDetailForm.elements.detailName.value;
     product.brand = productDetailForm.elements.detailBrand.value;
@@ -260,8 +367,12 @@ const createProductEditorSection = () => {
     product.description = productDetailForm.elements.detailDescription.value;
     product.category = productDetailForm.elements.detailCategory.value;
     product.store = productDetailForm.elements.detailStore.value;
+    if (imageUrl) {
+      product.imageUrl = imageUrl;
+    }
 
     renderProductList(productSearch?.value || '');
+    showProductDetail(selectedProductId);
     alert('Detalhes do produto atualizados com sucesso.');
   });
 };
@@ -270,6 +381,10 @@ const hideProductForm = () => {
   if (productFormSection) productFormSection.hidden = true;
   if (dashboardSection) dashboardSection.hidden = false;
   productForm?.reset();
+  if (productImagePreview) {
+    productImagePreview.hidden = true;
+    productImagePreview.src = '';
+  }
 };
 
 const showProductForm = () => {
@@ -307,6 +422,7 @@ btnAddProduct?.addEventListener('click', showProductForm);
 btnEditProducts?.addEventListener('click', showProductEditor);
 btnBackToAdmin?.addEventListener('click', hideProductForm);
 btnCancelProduct?.addEventListener('click', hideProductForm);
+productImageInput?.addEventListener('change', () => setPreviewImage(productImagePreview, productImageInput));
 
 btnAddStore?.addEventListener('click', () => {
   alert('Botão Cadastrar Loja ativado. Em breve adicionaremos a tela de cadastro de lojas.');
@@ -316,8 +432,11 @@ btnViewStores?.addEventListener('click', () => {
   alert('Aqui você pode visualizar a lista de lojas e mercados.');
 });
 
-productForm?.addEventListener('submit', (event) => {
+productForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
+
+  const productImageInput = document.getElementById('productImage');
+  const imageUrl = productImageInput?.files?.length ? await readImageFile(productImageInput) : null;
 
   const productData = {
     id: String(Date.now()),
@@ -329,6 +448,7 @@ productForm?.addEventListener('submit', (event) => {
     description: document.getElementById('productDescription')?.value || '',
     category: document.getElementById('productCategory')?.value || '',
     store: document.getElementById('productStore')?.value || '',
+    imageUrl: imageUrl || '',
   };
 
   products.unshift(productData);
