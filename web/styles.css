@@ -142,7 +142,13 @@ body {
 
 .product-form label,
 .product-form input,
-.product-form textarea {
+.product-form textarea,
+.store-form label,
+.store-form input,
+.store-form textarea,
+.store-screen label,
+.store-screen input,
+.store-screen textarea {
   width: 100%;
   display: block;
 }
@@ -183,6 +189,53 @@ body {
   gap: 14px;
 }
 
+.store-screen {
+  display: grid;
+  gap: 18px;
+}
+
+.store-list-section {
+  margin-top: 24px;
+}
+
+.store-list {
+  display: grid;
+  gap: 14px;
+}
+
+.store-card {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.store-card-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: #eef2ff;
+  background-size: cover;
+  background-position: center;
+}
+
+.store-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.store-card span {
+  display: block;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .product-editor-header h2 {
   margin: 0;
 }
@@ -221,6 +274,7 @@ body {
 }
 
 .product-card-image {
+  position: relative;
   width: 72px;
   height: 72px;
   border-radius: 18px;
@@ -228,6 +282,19 @@ body {
   background-size: cover;
   background-position: center;
   flex-shrink: 0;
+}
+
+.store-logo-badge {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
 }
 
 .product-card-info {

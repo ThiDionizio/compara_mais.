@@ -3,10 +3,16 @@ const btnEditProducts = document.getElementById('btnEditProducts');
 const btnAddStore = document.getElementById('btnAddStore');
 const btnViewStores = document.getElementById('btnViewStores');
 const btnBackToAdmin = document.getElementById('btnBackToAdmin');
+const btnBackToAdminStore = document.getElementById('btnBackToAdminStore');
 const btnCancelProduct = document.getElementById('btnCancelProduct');
+const btnCancelStore = document.getElementById('btnCancelStore');
 const productFormSection = document.getElementById('productFormSection');
+const storeScreenSection = document.getElementById('storeScreenSection');
 const dashboardSection = document.getElementById('dashboardSection');
 const productForm = document.getElementById('productForm');
+const storeForm = document.getElementById('storeForm');
+const storeLogoInput = document.getElementById('storeLogo');
+const storeLogoPreview = document.getElementById('storeLogoPreview');
 const productImageInput = document.getElementById('productImage');
 const productImagePreview = document.getElementById('productImagePreview');
 
@@ -59,6 +65,9 @@ const products = [
 ];
 
 let selectedProductId = null;
+const stores = [];
+
+const findStoreByName = (name) => stores.find((store) => store.name.toLowerCase() === name.trim().toLowerCase());
 
 const renderProductList = (filter = '') => {
   const query = filter.trim().toLowerCase();
@@ -75,10 +84,14 @@ const renderProductList = (filter = '') => {
   }
 
   productList.innerHTML = visibleProducts
-    .map(
-      (product) => `
+    .map((product) => {
+      const store = findStoreByName(product.store);
+      const logoBadge = store && store.logoUrl ? `<span class="store-logo-badge" style="background-image: url('${store.logoUrl}')"></span>` : '';
+      return `
         <article class="product-card" data-id="${product.id}">
-          <div class="product-card-image" style="${product.imageUrl ? `background-image: url('${product.imageUrl}')` : ''}"></div>
+          <div class="product-card-image" style="${product.imageUrl ? `background-image: url('${product.imageUrl}')` : ''}">
+            ${logoBadge}
+          </div>
           <div class="product-card-info">
             <strong>${product.name}</strong>
             <span>${product.brand} • ${product.weight}</span>
@@ -88,8 +101,8 @@ const renderProductList = (filter = '') => {
             <small>${product.store}</small>
           </div>
         </article>
-      `
-    )
+      `;
+    })
     .join('');
 };
 
@@ -377,6 +390,31 @@ const createProductEditorSection = () => {
   });
 };
 
+const renderStoreList = () => {
+  const storeList = document.getElementById('storeList');
+  if (!storeList) return;
+
+  if (stores.length === 0) {
+    storeList.innerHTML = '<p class="empty-state">Nenhuma loja cadastrada ainda.</p>';
+    return;
+  }
+
+  storeList.innerHTML = stores
+    .map((store) => `
+      <article class="store-card">
+        <div class="store-card-logo" style="${store.logoUrl ? `background-image: url('${store.logoUrl}')` : ''}"></div>
+        <div>
+          <strong>${store.name}</strong>
+          <span>${store.cnpj || 'CNPJ não informado'}</span>
+          <span>${store.contact || 'Contato não informado'}</span>
+          <span>${store.address || 'Endereço não informado'}</span>
+          <span>${store.hours || 'Horário não informado'}</span>
+        </div>
+      </article>
+    `)
+    .join('');
+};
+
 const hideProductForm = () => {
   if (productFormSection) productFormSection.hidden = true;
   if (dashboardSection) dashboardSection.hidden = false;
@@ -390,7 +428,31 @@ const hideProductForm = () => {
 const showProductForm = () => {
   if (dashboardSection) dashboardSection.hidden = true;
   if (productEditorSection) productEditorSection.hidden = true;
+  if (storeScreenSection) storeScreenSection.hidden = true;
   if (productFormSection) productFormSection.hidden = false;
+};
+
+const hideStoreScreen = () => {
+  if (storeScreenSection) storeScreenSection.hidden = true;
+  if (dashboardSection) dashboardSection.hidden = false;
+  storeForm?.reset();
+  if (storeLogoPreview) {
+    storeLogoPreview.hidden = true;
+    storeLogoPreview.src = '';
+  }
+};
+
+const showStoreScreen = (showForm = true) => {
+  if (dashboardSection) dashboardSection.hidden = true;
+  if (productFormSection) productFormSection.hidden = true;
+  if (productEditorSection) productEditorSection.hidden = true;
+  if (storeScreenSection) {
+    storeScreenSection.hidden = false;
+  }
+  if (storeForm) {
+    storeForm.hidden = !showForm;
+  }
+  renderStoreList();
 };
 
 const hideProductEditor = () => {
@@ -422,15 +484,13 @@ btnAddProduct?.addEventListener('click', showProductForm);
 btnEditProducts?.addEventListener('click', showProductEditor);
 btnBackToAdmin?.addEventListener('click', hideProductForm);
 btnCancelProduct?.addEventListener('click', hideProductForm);
+btnBackToAdminStore?.addEventListener('click', hideStoreScreen);
+btnCancelStore?.addEventListener('click', hideStoreScreen);
 productImageInput?.addEventListener('change', () => setPreviewImage(productImagePreview, productImageInput));
+storeLogoInput?.addEventListener('change', () => setPreviewImage(storeLogoPreview, storeLogoInput));
 
-btnAddStore?.addEventListener('click', () => {
-  alert('Botão Cadastrar Loja ativado. Em breve adicionaremos a tela de cadastro de lojas.');
-});
-
-btnViewStores?.addEventListener('click', () => {
-  alert('Aqui você pode visualizar a lista de lojas e mercados.');
-});
+btnAddStore?.addEventListener('click', () => showStoreScreen(true));
+btnViewStores?.addEventListener('click', () => showStoreScreen(false));
 
 productForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -455,6 +515,30 @@ productForm?.addEventListener('submit', async (event) => {
   renderProductList(productSearch?.value || '');
   alert(`Produto salvo:\nNome: ${productData.name}\nMarca: ${productData.brand}\nPreço: R$ ${productData.price}`);
   hideProductForm();
+});
+
+storeForm?.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const logoUrl = storeLogoInput?.files?.length ? await readImageFile(storeLogoInput) : null;
+  const storeData = {
+    id: String(Date.now()),
+    name: document.getElementById('storeName')?.value || '',
+    cnpj: document.getElementById('storeCNPJ')?.value || '',
+    contact: document.getElementById('storeContact')?.value || '',
+    address: document.getElementById('storeAddress')?.value || '',
+    hours: document.getElementById('storeHours')?.value || '',
+    logoUrl: logoUrl || '',
+  };
+
+  stores.unshift(storeData);
+  renderStoreList();
+  alert(`Loja cadastrada:\n${storeData.name}`);
+  storeForm?.reset();
+  if (storeLogoPreview) {
+    storeLogoPreview.hidden = true;
+    storeLogoPreview.src = '';
+  }
 });
 
 renderProductList();

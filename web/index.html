@@ -73,8 +73,50 @@
               <p>Listar estabelecimentos de Ivaiporã e seus dados.</p>
             </article>
           </section>
+        </section>
 
-          <section class="actions">
+        <section id="storeScreenSection" class="card store-screen" hidden>
+          <div class="form-header">
+            <button id="btnBackToAdminStore" type="button" class="btn btn-secondary back-btn">Voltar</button>
+            <div>
+              <h2>Cadastro de Loja</h2>
+              <p class="subtitle">Preencha os dados da empresa e carregue um logotipo para exibir junto aos produtos.</p>
+            </div>
+          </div>
+
+          <form id="storeForm">
+            <label class="form-label" for="storeName">Nome da empresa</label>
+            <input id="storeName" name="storeName" type="text" placeholder="Digite o nome da loja" required />
+
+            <label class="form-label" for="storeCNPJ">CNPJ</label>
+            <input id="storeCNPJ" name="storeCNPJ" type="text" placeholder="00.000.000/0000-00" />
+
+            <label class="form-label" for="storeContact">Contato</label>
+            <input id="storeContact" name="storeContact" type="text" placeholder="Telefone, WhatsApp ou outro" />
+
+            <label class="form-label" for="storeAddress">Endereço</label>
+            <input id="storeAddress" name="storeAddress" type="text" placeholder="Rua, número, bairro" />
+
+            <label class="form-label" for="storeHours">Horário de funcionamento</label>
+            <input id="storeHours" name="storeHours" type="text" placeholder="Ex: 08:00 - 20:00" />
+
+            <label class="form-label" for="storeLogo">Logotipo da loja</label>
+            <input id="storeLogo" name="storeLogo" type="file" accept="image/*" />
+            <img id="storeLogoPreview" class="image-preview" alt="Prévia do logotipo da loja" hidden />
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Salvar loja</button>
+              <button id="btnCancelStore" type="button" class="btn btn-secondary">Cancelar</button>
+            </div>
+          </form>
+
+          <section id="storeListSection" class="store-list-section">
+            <h3>Lojas cadastradas</h3>
+            <div id="storeList" class="store-list"></div>
+          </section>
+        </section>
+
+        <section class="actions">
             <button id="btnAddProduct" class="btn btn-primary">Cadastrar novo produto</button>
             <button id="btnEditProducts" class="btn btn-secondary">Editar produtos</button>
             <button id="btnAddStore" class="btn btn-secondary">Cadastrar Loja</button>
