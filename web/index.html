@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Compara Mais - Admin</title>
+    <title>Compara Mais</title>
     <script>
       // Bloqueia registro de listeners para eventos de mutação DOM obsoletos
       // (evita mensagens como: "Listener added for a 'DOMNodeInserted' mutation event")
@@ -48,15 +48,21 @@
   </head>
   <body>
     <div class="app-shell">
-      <header class="app-header">
-        <div>
-          <p class="label">Administrador</p>
-          <h1>Compara Mais</h1>
-          <p class="subtitle">Painel web mobile first para gerenciamento de preços e lojas.</p>
-        </div>
-      </header>
+      <nav class="nav-bar">
+        <button id="btnNavAdmin" type="button" class="nav-btn active">Admin</button>
+        <button id="btnNavUser" type="button" class="nav-btn">Loja</button>
+      </nav>
 
-      <main class="content">
+      <div id="adminScreen">
+        <header class="app-header">
+          <div>
+            <p class="label">Administrador</p>
+            <h1>Compara Mais</h1>
+            <p class="subtitle">Painel web mobile first para gerenciamento de preços e lojas.</p>
+          </div>
+        </header>
+
+        <main class="content">
         <section id="dashboardSection">
           <section class="card card-primary">
             <h2>Visão geral</h2>
@@ -73,14 +79,21 @@
               <p>Listar estabelecimentos de Ivaiporã e seus dados.</p>
             </article>
           </section>
+
+          <section class="actions">
+            <button id="btnAddProduct" class="btn btn-primary">Cadastrar novo produto</button>
+            <button id="btnEditProducts" class="btn btn-secondary">Editar produtos</button>
+            <button id="btnAddStore" class="btn btn-secondary">Cadastrar Loja</button>
+            <button id="btnViewStores" class="btn btn-secondary">Ver lista de lojas</button>
+          </section>
         </section>
 
         <section id="storeScreenSection" class="card store-screen" hidden>
           <div class="form-header">
             <button id="btnBackToAdminStore" type="button" class="btn btn-secondary back-btn">Voltar</button>
             <div>
-              <h2>Cadastro de Loja</h2>
-              <p class="subtitle">Preencha os dados da empresa e carregue um logotipo para exibir junto aos produtos.</p>
+              <h2 id="storeScreenTitle">Cadastro de Loja</h2>
+              <p id="storeScreenSubtitle" class="subtitle">Preencha os dados da empresa e carregue um logotipo para exibir junto aos produtos.</p>
             </div>
           </div>
 
@@ -116,14 +129,6 @@
           </section>
         </section>
 
-        <section class="actions">
-            <button id="btnAddProduct" class="btn btn-primary">Cadastrar novo produto</button>
-            <button id="btnEditProducts" class="btn btn-secondary">Editar produtos</button>
-            <button id="btnAddStore" class="btn btn-secondary">Cadastrar Loja</button>
-            <button id="btnViewStores" class="btn btn-secondary">Ver lista de lojas</button>
-          </section>
-        </section>
-
 
         <section id="productFormSection" class="card product-form" hidden>
           <div class="form-header">
@@ -143,9 +148,6 @@
 
             <label class="form-label" for="productPrice">Preço</label>
             <input id="productPrice" name="productPrice" type="number" step="0.01" placeholder="Ex: 12.90" required />
-
-            <label class="form-label" for="productValidity">Validade</label>
-            <input id="productValidity" name="productValidity" type="date" />
 
             <label class="form-label" for="productDescription">Descrição</label>
             <textarea id="productDescription" name="productDescription" rows="4" placeholder="Detalhes adicionais do produto"></textarea>
@@ -167,6 +169,51 @@
           </form>
         </section>
       </main>
+      </div>
+
+      <div id="userScreen" hidden>
+        <header class="user-header">
+          <h1>Compara Mais</h1>
+          <p class="user-subtitle">Encontre os melhores preços da cidade</p>
+          <div class="user-search-bar">
+            <input id="userSearch" class="user-search-input" type="search" placeholder="Buscar produto, marca ou loja..." />
+          </div>
+        </header>
+
+        <section id="userCategoryBar" class="user-category-bar">
+          <button class="category-chip active" data-category="Todos">Todos</button>
+        </section>
+
+        <section class="user-section">
+          <h2 class="user-section-title">Ofertas do Dia</h2>
+          <div id="promotionsList" class="promotions-list"></div>
+        </section>
+
+        <section class="user-section">
+          <h2 class="user-section-title">Todos os Produtos</h2>
+          <div id="userProductList" class="user-product-grid"></div>
+          <p id="userEmptyState" class="empty-state" hidden>Nenhum produto encontrado.</p>
+        </section>
+
+        <section id="userProductDetail" class="user-detail-overlay" hidden>
+          <div class="user-detail-modal">
+            <div class="user-detail-header">
+              <h3 id="userDetailName"></h3>
+              <button id="btnCloseUserDetail" type="button" class="user-detail-close">&times;</button>
+            </div>
+            <div class="user-detail-body">
+              <div id="userDetailImage" class="user-detail-image"></div>
+              <div class="user-detail-info">
+                <span id="userDetailBrand" class="user-detail-brand"></span>
+                <span id="userDetailWeight" class="user-detail-weight"></span>
+                <span id="userDetailPrice" class="user-detail-price"></span>
+                <span id="userDetailStore" class="user-detail-store"></span>
+                <p id="userDetailDescription" class="user-detail-description"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
 
     <script src="app.js"></script>

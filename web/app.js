@@ -11,6 +11,8 @@ const storeScreenSection = document.getElementById('storeScreenSection');
 const dashboardSection = document.getElementById('dashboardSection');
 const productForm = document.getElementById('productForm');
 const storeForm = document.getElementById('storeForm');
+const storeScreenTitle = document.getElementById('storeScreenTitle');
+const storeScreenSubtitle = document.getElementById('storeScreenSubtitle');
 const storeLogoInput = document.getElementById('storeLogo');
 const storeLogoPreview = document.getElementById('storeLogoPreview');
 const productImageInput = document.getElementById('productImage');
@@ -34,7 +36,6 @@ const products = [
     brand: 'Italac',
     weight: '1L',
     price: '6.90',
-    validity: '2026-07-15',
     description: 'Leite integral UHT para consumo diário.',
     category: 'Bebidas',
     store: 'Mercado Central',
@@ -46,7 +47,6 @@ const products = [
     brand: 'Tio João',
     weight: '5kg',
     price: '24.50',
-    validity: '2027-01-10',
     description: 'Arroz branco de ótima qualidade.',
     category: 'Alimentos',
     store: 'Supermercado São Paulo',
@@ -57,9 +57,158 @@ const products = [
     brand: 'Pilão',
     weight: '500g',
     price: '14.30',
-    validity: '2026-09-20',
     description: 'Café torrado e moído para preparo rápido.',
     category: 'Bebidas',
+    store: 'Mercado Central',
+  },
+  {
+    id: '4',
+    name: 'Feijão Carioca',
+    brand: 'Kicaldo',
+    weight: '1kg',
+    price: '8.49',
+    description: 'Feijão carioca selecionado, grains uniformes.',
+    category: 'Alimentos',
+    store: 'Mercado Central',
+  },
+  {
+    id: '5',
+    name: 'Óleo de Soja',
+    brand: 'Liza',
+    weight: '900ml',
+    price: '7.29',
+    description: 'Óleo de soja refinado para cozinha.',
+    category: 'Alimentos',
+    store: 'Supermercado São Paulo',
+  },
+  {
+    id: '6',
+    name: 'Açúcar Cristal',
+    brand: 'União',
+    weight: '5kg',
+    price: '18.90',
+    description: 'Açúcar cristal puro para uso geral.',
+    category: 'Alimentos',
+    store: 'Mercado Central',
+  },
+  {
+    id: '7',
+    name: 'Macarrão Espaguete',
+    brand: 'Barilla',
+    weight: '500g',
+    price: '9.79',
+    description: 'Massa italiana de sêmola de trigo.',
+    category: 'Alimentos',
+    store: 'Supermercado São Paulo',
+  },
+  {
+    id: '8',
+    name: 'Farinha de Trigo',
+    brand: 'Renata',
+    weight: '1kg',
+    price: '6.49',
+    description: 'Farinha de trigo refinada para pães e bolos.',
+    category: 'Alimentos',
+    store: 'Mercado Central',
+  },
+  {
+    id: '9',
+    name: 'Molho de Tomate',
+    brand: 'Quero',
+    weight: '340g',
+    price: '3.99',
+    description: 'Molho de tomate tradicional com temperos.',
+    category: 'Alimentos',
+    store: 'Supermercado São Paulo',
+  },
+  {
+    id: '10',
+    name: 'Sardinha em Lata',
+    brand: 'Gomes da Costa',
+    weight: '150g',
+    price: '6.89',
+    description: 'Sardinha em óleo, ideal para refeições rápidas.',
+    category: 'Alimentos',
+    store: 'Mercado Central',
+  },
+  {
+    id: '11',
+    name: 'Sal Refinado',
+    brand: 'Cisne',
+    weight: '1kg',
+    price: '3.29',
+    description: 'Sal refinado iodado para tempero.',
+    category: 'Alimentos',
+    store: 'Supermercado São Paulo',
+  },
+  {
+    id: '12',
+    name: 'Biscoito Maisena',
+    brand: 'Adria',
+    weight: '400g',
+    price: '5.49',
+    description: 'Biscoito maisena crocante para lanches.',
+    category: 'Alimentos',
+    store: 'Mercado Central',
+  },
+  {
+    id: '13',
+    name: 'Extrato de Tomate',
+    brand: 'Elefante',
+    weight: '340g',
+    price: '4.29',
+    description: 'Extrato de tomate concentrado para molhos.',
+    category: 'Alimentos',
+    store: 'Supermercado São Paulo',
+  },
+  {
+    id: '14',
+    name: 'Cuscuz Amarelo',
+    brand: 'Yoki',
+    weight: '500g',
+    price: '6.99',
+    description: 'Flocão de milho para preparo de cuscuz.',
+    category: 'Alimentos',
+    store: 'Mercado Central',
+  },
+  {
+    id: '15',
+    name: 'Achocolatado em Pó',
+    brand: 'Nescau',
+    weight: '800g',
+    price: '16.90',
+    description: 'Achocolatado em pó para preparo de bebida.',
+    category: 'Bebidas',
+    store: 'Supermercado São Paulo',
+  },
+  {
+    id: '16',
+    name: 'Leite em Pó',
+    brand: 'Ninho',
+    weight: '400g',
+    price: '19.90',
+    description: 'Leite em pó integral para receitas e bebidas.',
+    category: 'Alimentos',
+    store: 'Mercado Central',
+  },
+  {
+    id: '17',
+    name: 'Sabão em Pó',
+    brand: 'Omo',
+    weight: '1.6kg',
+    price: '17.90',
+    description: 'Sabão em pó para lavagem de roupas.',
+    category: 'Limpeza',
+    store: 'Supermercado São Paulo',
+  },
+  {
+    id: '18',
+    name: 'Papel Higiênico',
+    brand: 'Neve',
+    weight: '12 rolos',
+    price: '22.90',
+    description: 'Papel higiênico folha dupla, macio e resistente.',
+    category: 'Higiene',
     store: 'Mercado Central',
   },
 ];
@@ -164,7 +313,6 @@ const showProductDetail = (id) => {
   document.getElementById('viewBrand').textContent = product.brand;
   document.getElementById('viewWeight').textContent = product.weight;
   document.getElementById('viewPrice').textContent = `R$ ${product.price}`;
-  document.getElementById('viewValidity').textContent = product.validity || '-';
   document.getElementById('viewCategory').textContent = product.category;
   document.getElementById('viewStore').textContent = product.store;
   document.getElementById('viewDescription').textContent = product.description;
@@ -173,7 +321,6 @@ const showProductDetail = (id) => {
   productDetailForm.elements.detailBrand.value = product.brand;
   productDetailForm.elements.detailWeight.value = product.weight;
   productDetailForm.elements.detailPrice.value = product.price;
-  productDetailForm.elements.detailValidity.value = product.validity;
   productDetailForm.elements.detailDescription.value = product.description;
   productDetailForm.elements.detailCategory.value = product.category;
   productDetailForm.elements.detailStore.value = product.store;
@@ -229,7 +376,6 @@ const createProductEditorSection = () => {
           <div class="detail-row"><span class="detail-label">Marca:</span><span id="viewBrand"></span></div>
           <div class="detail-row"><span class="detail-label">Peso / Quantidade:</span><span id="viewWeight"></span></div>
           <div class="detail-row"><span class="detail-label">Preço:</span><span id="viewPrice"></span></div>
-          <div class="detail-row"><span class="detail-label">Validade:</span><span id="viewValidity"></span></div>
           <div class="detail-row"><span class="detail-label">Categoria:</span><span id="viewCategory"></span></div>
           <div class="detail-row"><span class="detail-label">Loja:</span><span id="viewStore"></span></div>
           <p class="detail-description" id="viewDescription"></p>
@@ -248,9 +394,6 @@ const createProductEditorSection = () => {
 
           <label class="form-label" for="detailPrice">Preço</label>
           <input id="detailPrice" name="detailPrice" type="number" step="0.01" required />
-
-          <label class="form-label" for="detailValidity">Validade</label>
-          <input id="detailValidity" name="detailValidity" type="date" />
 
           <label class="form-label" for="detailDescription">Descrição</label>
           <textarea id="detailDescription" name="detailDescription" rows="4"></textarea>
@@ -376,7 +519,6 @@ const createProductEditorSection = () => {
     product.brand = productDetailForm.elements.detailBrand.value;
     product.weight = productDetailForm.elements.detailWeight.value;
     product.price = productDetailForm.elements.detailPrice.value;
-    product.validity = productDetailForm.elements.detailValidity.value;
     product.description = productDetailForm.elements.detailDescription.value;
     product.category = productDetailForm.elements.detailCategory.value;
     product.store = productDetailForm.elements.detailStore.value;
@@ -452,6 +594,14 @@ const showStoreScreen = (showForm = true) => {
   if (storeForm) {
     storeForm.hidden = !showForm;
   }
+  if (storeScreenTitle) {
+    storeScreenTitle.textContent = showForm ? 'Cadastro de Loja' : 'Lojas Cadastradas';
+  }
+  if (storeScreenSubtitle) {
+    storeScreenSubtitle.textContent = showForm
+      ? 'Preencha os dados da empresa e carregue um logotipo para exibir junto aos produtos.'
+      : 'Consulte os estabelecimentos cadastrados e seus dados.';
+  }
   renderStoreList();
 };
 
@@ -504,7 +654,6 @@ productForm?.addEventListener('submit', async (event) => {
     brand: document.getElementById('productBrand')?.value || '',
     weight: document.getElementById('productWeight')?.value || '',
     price: document.getElementById('productPrice')?.value || '',
-    validity: document.getElementById('productValidity')?.value || '',
     description: document.getElementById('productDescription')?.value || '',
     category: document.getElementById('productCategory')?.value || '',
     store: document.getElementById('productStore')?.value || '',
@@ -542,3 +691,180 @@ storeForm?.addEventListener('submit', async (event) => {
 });
 
 renderProductList();
+
+/* ═══════════════════════════════════════════
+   TELA DE USUÁRIO
+   ═══════════════════════════════════════════ */
+
+const adminScreen = document.getElementById('adminScreen');
+const userScreen = document.getElementById('userScreen');
+const btnNavAdmin = document.getElementById('btnNavAdmin');
+const btnNavUser = document.getElementById('btnNavUser');
+const userSearch = document.getElementById('userSearch');
+const userCategoryBar = document.getElementById('userCategoryBar');
+const promotionsList = document.getElementById('promotionsList');
+const userProductList = document.getElementById('userProductList');
+const userEmptyState = document.getElementById('userEmptyState');
+const userProductDetail = document.getElementById('userProductDetail');
+const btnCloseUserDetail = document.getElementById('btnCloseUserDetail');
+
+let activeCategory = 'Todos';
+
+const showAdminScreen = () => {
+  adminScreen.hidden = false;
+  userScreen.hidden = true;
+  btnNavAdmin.classList.add('active');
+  btnNavUser.classList.remove('active');
+};
+
+const showUserScreen = () => {
+  adminScreen.hidden = true;
+  userScreen.hidden = false;
+  btnNavAdmin.classList.remove('active');
+  btnNavUser.classList.add('active');
+  renderUserCategories();
+  renderPromotions();
+  renderUserProducts();
+};
+
+btnNavAdmin?.addEventListener('click', showAdminScreen);
+btnNavUser?.addEventListener('click', showUserScreen);
+
+const getUserCategories = () => {
+  const cats = new Set(products.map((p) => p.category));
+  return ['Todos', ...Array.from(cats).sort()];
+};
+
+const renderUserCategories = () => {
+  if (!userCategoryBar) return;
+  userCategoryBar.innerHTML = getUserCategories()
+    .map((cat) => `<button class="category-chip${cat === activeCategory ? ' active' : ''}" data-category="${cat}">${cat}</button>`)
+    .join('');
+
+  userCategoryBar.querySelectorAll('.category-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      activeCategory = chip.dataset.category;
+      renderUserCategories();
+      renderUserProducts();
+    });
+  });
+};
+
+const getFilteredUserProducts = (filter = '') => {
+  const query = filter.trim().toLowerCase();
+  return products.filter((product) => {
+    const matchesCategory = activeCategory === 'Todos' || product.category === activeCategory;
+    const matchesSearch = !query || `${product.name} ${product.brand} ${product.store} ${product.category}`.toLowerCase().includes(query);
+    return matchesCategory && matchesSearch;
+  });
+};
+
+const renderPromotions = () => {
+  if (!promotionsList) return;
+
+  const sorted = [...products].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+  const promoProducts = sorted.slice(0, 6);
+
+  if (promoProducts.length === 0) {
+    promotionsList.innerHTML = '<p class="empty-state">Nenhuma oferta disponível.</p>';
+    return;
+  }
+
+  promotionsList.innerHTML = promoProducts
+    .map((product) => {
+      const store = findStoreByName(product.store);
+      const logoBadge = store && store.logoUrl ? `<span class="store-logo-badge" style="background-image: url('${store.logoUrl}')"></span>` : '';
+      return `
+        <article class="promo-card" data-id="${product.id}">
+          <div class="promo-card-image" style="${product.imageUrl ? `background-image: url('${product.imageUrl}')` : ''}">
+            ${logoBadge}
+            <span class="promo-badge">Oferta</span>
+          </div>
+          <div class="promo-card-info">
+            <strong>${product.name}</strong>
+            <span>${product.brand} • ${product.weight}</span>
+            <span class="promo-price">R$ ${product.price}</span>
+          </div>
+        </article>
+      `;
+    })
+    .join('');
+
+  promotionsList.querySelectorAll('.promo-card').forEach((card) => {
+    card.addEventListener('click', () => openUserProductDetail(card.dataset.id));
+  });
+};
+
+const renderUserProducts = () => {
+  if (!userProductList) return;
+
+  const filtered = getFilteredUserProducts(userSearch?.value || '');
+
+  if (filtered.length === 0) {
+    userProductList.innerHTML = '';
+    if (userEmptyState) userEmptyState.hidden = false;
+    return;
+  }
+
+  if (userEmptyState) userEmptyState.hidden = true;
+
+  userProductList.innerHTML = filtered
+    .map((product) => {
+      const store = findStoreByName(product.store);
+      const logoBadge = store && store.logoUrl ? `<span class="store-logo-badge" style="background-image: url('${store.logoUrl}')"></span>` : '';
+      return `
+        <article class="user-product-card" data-id="${product.id}">
+          <div class="user-product-image" style="${product.imageUrl ? `background-image: url('${product.imageUrl}')` : ''}">
+            ${logoBadge}
+          </div>
+          <div class="user-product-info">
+            <strong>${product.name}</strong>
+            <span class="user-product-brand">${product.brand} • ${product.weight}</span>
+            <div class="user-product-bottom">
+              <span class="user-product-price">R$ ${product.price}</span>
+              <span class="user-product-store">${product.store}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    })
+    .join('');
+
+  userProductList.querySelectorAll('.user-product-card').forEach((card) => {
+    card.addEventListener('click', () => openUserProductDetail(card.dataset.id));
+  });
+};
+
+const openUserProductDetail = (id) => {
+  const product = products.find((item) => item.id === id);
+  if (!product || !userProductDetail) return;
+
+  document.getElementById('userDetailName').textContent = product.name;
+  document.getElementById('userDetailBrand').textContent = product.brand;
+  document.getElementById('userDetailWeight').textContent = product.weight;
+  document.getElementById('userDetailPrice').textContent = `R$ ${product.price}`;
+  document.getElementById('userDetailStore').textContent = product.store;
+  document.getElementById('userDetailDescription').textContent = product.description;
+
+  const imageEl = document.getElementById('userDetailImage');
+  if (product.imageUrl) {
+    imageEl.style.backgroundImage = `url('${product.imageUrl}')`;
+  } else {
+    imageEl.style.backgroundImage = '';
+  }
+
+  userProductDetail.hidden = false;
+  document.body.style.overflow = 'hidden';
+};
+
+const closeUserProductDetail = () => {
+  if (userProductDetail) userProductDetail.hidden = true;
+  document.body.style.overflow = '';
+};
+
+btnCloseUserDetail?.addEventListener('click', closeUserProductDetail);
+userProductDetail?.addEventListener('click', (e) => {
+  if (e.target === userProductDetail) closeUserProductDetail();
+});
+
+userSearch?.addEventListener('input', () => renderUserProducts());
